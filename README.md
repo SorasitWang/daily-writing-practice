@@ -12,7 +12,13 @@ A single-page app for daily English writing practice: a topic and format each da
 
 ## Running it
 
-It's one file, `index.html`, with no build step or dependencies. Open it in a browser, or host it with GitHub Pages:
+There's no build step or dependencies, but the scripts are ES modules, so browsers won't load them from a `file://` URL. Serve the folder locally instead:
+
+```bash
+python3 -m http.server 8000   # then open http://localhost:8000
+```
+
+Or host it with GitHub Pages:
 
 1. Repo **Settings → Pages**
 2. Source: **Deploy from a branch**, branch `main`, folder `/ (root)`
@@ -33,7 +39,31 @@ The key is stored only in your browser's `localStorage` and is sent only to `api
 | Standard | `claude-sonnet-5-5` |
 | Thorough | `claude-opus-5-5`   |
 
-To change models, edit `TIER_MODELS` in `index.html`.
+To change models, edit `TIER_MODELS` in `js/coach.js`.
+
+## Project structure
+
+```
+index.html          page markup
+css/styles.css      all styles
+js/main.js          entry point: wires up the tabs and loads your data
+js/state.js         shared data (entries, vocab, grammar, stats, current feedback)
+js/storage.js       saving to localStorage or your Claude account
+js/coach.js         writing coach API calls (TIER_MODELS lives here)
+js/prompts.js       prompts sent to the coach
+js/data/topics.js   daily formats, topics and target-word pools
+js/write.js         Write tab: topic, target words, word count, streak, saving
+js/feedback.js      feedback card and structure analysis
+js/stages.js        rewrite comparison and model paragraph
+js/chat.js          follow-up chat
+js/grammar.js       grammar notebook and mistake stats
+js/vocab.js         vocab notebook
+js/history.js       History tab and tab switching
+js/settings.js      Settings tab, export and import
+js/render.js        redraws every tab
+js/html.js          small HTML builders shared by the coach views
+js/dom.js, util.js  small shared helpers
+```
 
 ## Your data
 

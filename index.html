@@ -1,1347 +1,229 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Daily Writing Practice</title>
-<style>
-  :root {
-    --bg:#faf9f6; --card:#ffffff; --field:#ffffff; --inset:#fdfcfa; --ink:#2d2a26; --muted:#8a857d;
-    --accent:#b05730; --accent-soft:#f6e8e0; --on-accent:#ffffff; --green:#3d7a4f; --green-soft:#e6f0e9;
-    --amber:#9a6b1f; --amber-soft:#f7efdd; --danger:#b04a30; --line:#e8e4de; --radius:12px;
-  }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-    --bg:#1c1a18; --card:#25221f; --field:#2b2824; --inset:#211f1c; --ink:#ece7df; --muted:#a39d93;
-    --accent:#de8a5f; --accent-soft:#3d2a20; --on-accent:#1c1a18; --green:#7fbf8f; --green-soft:#22332a;
-    --amber:#e0b468; --amber-soft:#3a2f1c; --danger:#e58a72; --line:#3a3631; color-scheme:dark;
-  } }
-  :root[data-theme="dark"] {
-    --bg:#1c1a18; --card:#25221f; --field:#2b2824; --inset:#211f1c; --ink:#ece7df; --muted:#a39d93;
-    --accent:#de8a5f; --accent-soft:#3d2a20; --on-accent:#1c1a18; --green:#7fbf8f; --green-soft:#22332a;
-    --amber:#e0b468; --amber-soft:#3a2f1c; --danger:#e58a72; --line:#3a3631; color-scheme:dark;
-  }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  body { background:var(--bg); color:var(--ink); font:15px/1.55 -apple-system,"Segoe UI",Roboto,sans-serif; padding-block:20px; padding-inline:16px; max-width:860px; margin:0 auto; }
-  h1 { font-size:20px; font-weight:700; }
-  .sub { color:var(--muted); font-size:13px; margin-top:2px; }
-  .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px; }
-  .streak { background:var(--amber-soft); color:var(--amber); padding:6px 12px; border-radius:20px; font-size:13px; font-weight:600; }
-  .tabs { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
-  .tab { padding:8px 16px; border:1px solid var(--line); background:var(--card); border-radius:20px; cursor:pointer; font-size:14px; color:var(--muted); }
-  .tab.active { background:var(--ink); color:var(--bg); border-color:var(--ink); }
-  .tab.warn::after { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); margin-left:6px; vertical-align:middle; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px; margin-bottom:14px; }
-  .label { font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:6px; }
-  .topic { font-size:17px; font-weight:600; }
-  .fmt { display:inline-block; background:var(--accent-soft); color:var(--accent); font-size:12px; font-weight:600; padding:3px 10px; border-radius:12px; margin-bottom:8px; }
-  .hint { color:var(--muted); font-size:13px; margin-top:6px; }
-  textarea { width:100%; min-height:180px; border:1px solid var(--line); border-radius:8px; padding:12px; font:inherit; font-size:15px; line-height:1.6; resize:vertical; background:var(--field); color:var(--ink); }
-  textarea:focus { outline:2px solid var(--accent); border-color:transparent; }
-  .row { display:flex; justify-content:space-between; align-items:center; margin-top:10px; flex-wrap:wrap; gap:8px; }
-  .wc { font-size:13px; color:var(--muted); }
-  .wc.ok { color:var(--green); font-weight:600; }
-  button:focus-visible, .tab:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-  .gmain, .vrow > div:first-child { min-width:0; overflow-wrap:anywhere; }
-  .sync { font-size:12px; color:var(--muted); }
-  button { border:none; border-radius:8px; padding:9px 16px; font-size:14px; font-weight:600; cursor:pointer; }
-  .btn-primary { background:var(--accent); color:var(--on-accent); }
-  .btn-primary:disabled { opacity:.5; cursor:default; }
-  .btn-ghost { background:transparent; color:var(--muted); border:1px solid var(--line); }
-  .btn-sm { padding:3px 10px; font-size:12px; border-radius:6px; }
-  .btn-add { background:var(--green-soft); color:var(--green); }
-  .btn-danger { background:transparent; color:var(--danger); border:1px solid var(--line); }
-  .fb-section { margin-top:14px; }
-  .fb-title { font-size:13px; font-weight:700; margin-bottom:6px; }
-  .fb-item { border-left:3px solid var(--line); padding:6px 10px; margin-bottom:6px; font-size:14px; background:var(--inset); border-radius:0 6px 6px 0; }
-  .fb-item.word { border-left-color:var(--accent); }
-  .fb-item.up { border-left-color:var(--green); }
-  .soso { color:var(--ink); font-style:italic; }
-  .fb-item.gram { border-left-color:var(--amber); }
-  .fb-item.vocab { border-left-color:var(--green); display:flex; justify-content:space-between; align-items:center; gap:8px; }
-  .orig { text-decoration:line-through; color:var(--muted); }
-  .better { color:var(--green); font-weight:600; }
-  .why { color:var(--muted); font-size:13px; display:block; }
-  .overall { background:var(--accent-soft); border-radius:8px; padding:12px; font-size:14px; }
-  .spinner { color:var(--muted); font-size:14px; padding:12px 0; }
-  input[type=text], input[type=password] { border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:14px; background:var(--field); color:var(--ink); width:100%; }
-  .vocab-grid { display:grid; grid-template-columns:1fr 100px 1.1fr 1.3fr auto; gap:8px; margin-bottom:12px; }
-  .vmean { color:var(--ink); font-size:13px; }
-  .gram-grid { display:grid; grid-template-columns:1.1fr 1.1fr 0.9fr 150px auto; gap:8px; margin-bottom:12px; }
-  select { border:1px solid var(--line); border-radius:8px; padding:8px; font-size:14px; background:var(--field); color:var(--ink); }
-  .vrow { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; padding:10px 0; border-bottom:1px solid var(--line); }
-  .vrow:last-child { border-bottom:none; }
-  .vword { font-weight:700; }
-  .vtag { font-size:11px; background:var(--accent-soft); color:var(--accent); border-radius:10px; padding:1px 8px; margin-left:6px; }
-  .gtag { font-size:11px; background:var(--amber-soft); color:var(--amber); border-radius:10px; padding:1px 8px; margin-left:6px; font-weight:700; }
-  .vex { color:var(--muted); font-size:13px; font-style:italic; }
-  .grow.fixed .gmain { text-decoration:line-through; color:var(--muted); }
-  .tw { display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:14px; align-items:baseline; }
-  .tw:last-child { border-bottom:none; }
-  .tw .mark { width:18px; color:var(--muted); flex-shrink:0; }
-  .tw.used .mark { color:var(--green); font-weight:700; }
-  .tw.used .twword { color:var(--green); }
-  .twword { font-weight:700; }
-  .twmean { color:var(--muted); font-size:13px; }
-  .stage { margin-top:16px; border-top:1px solid var(--line); padding-top:14px; }
-  .stage textarea { min-height:150px; margin-top:8px; }
-  .stage .hint { margin-top:0; }
-  .chips { display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 8px; }
-  .chip { font-size:12px; background:var(--inset); border:1px solid var(--line); border-radius:12px; padding:2px 10px; color:var(--ink); font-variant-numeric:tabular-nums; }
-  .chip.warn { background:var(--amber-soft); color:var(--amber); border-color:transparent; }
-  .para { display:flex; gap:8px; align-items:baseline; }
-  .para .pn { font-size:12px; font-weight:700; color:var(--muted); flex-shrink:0; width:22px; }
-  .para .pt { min-width:0; }
-  .badge { font-size:11px; font-weight:700; border-radius:10px; padding:1px 8px; margin-left:6px; }
-  .badge.ok { background:var(--green-soft); color:var(--green); }
-  .badge.no { background:var(--amber-soft); color:var(--amber); }
-  .side { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
-  .side > div { min-width:0; background:var(--inset); border:1px solid var(--line); border-radius:8px; padding:10px; font-size:14px; white-space:pre-wrap; overflow-wrap:anywhere; }
-  .side .label { white-space:normal; }
-  .side .model { border-color:var(--green); }
-  .verdict { display:inline-block; font-size:12px; font-weight:700; border-radius:12px; padding:2px 10px; margin-bottom:8px; }
-  .verdict.big { background:var(--green-soft); color:var(--green); }
-  .verdict.clear { background:var(--accent-soft); color:var(--accent); }
-  .verdict.small { background:var(--amber-soft); color:var(--amber); }
-  .stage .row select { flex:1; min-width:0; }
-  @media (max-width:600px){ .side { grid-template-columns:1fr; } }
-  .chat-box { margin-top:14px; border-top:1px solid var(--line); padding-top:12px; }
-  .chat-q { background:var(--accent-soft); border-radius:8px; padding:8px 10px; margin:6px 0 6px 40px; font-size:14px; }
-  .chat-a { background:var(--inset); border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin:6px 40px 6px 0; font-size:14px; white-space:pre-wrap; }
-  .chat-row { display:flex; gap:8px; margin-top:8px; }
-  .chat-row input { flex:1; }
-  .stat-row { display:flex; align-items:center; gap:10px; padding:5px 0; }
-  .stat-label { width:180px; font-size:13px; flex-shrink:0; }
-  .stat-bar-wrap { flex:1; }
-  .stat-bar { height:10px; background:var(--amber); border-radius:5px; min-width:4px; }
-  .stat-num { font-size:12px; color:var(--muted); width:130px; flex-shrink:0; text-align:right; }
-  @media (max-width:600px){ .stat-label{width:120px;} .stat-num{width:90px;} }
-  .gbtns { display:flex; gap:6px; flex-shrink:0; }
-  .hrow { padding:12px 0; border-bottom:1px solid var(--line); cursor:pointer; }
-  .hrow:last-child { border-bottom:none; }
-  .hdate { font-weight:700; font-size:14px; }
-  .htopic { color:var(--muted); font-size:13px; }
-  .hbody { display:none; margin-top:8px; white-space:pre-wrap; font-size:14px; background:var(--inset); border-radius:8px; padding:10px; }
-  .hrow.open .hbody { display:block; }
-  .empty { color:var(--muted); text-align:center; padding:24px 0; font-size:14px; }
-  .saved-note { color:var(--green); font-size:13px; font-weight:600; }
-  .search { margin-bottom:10px; }
-  .file-btn { display:inline-block; cursor:pointer; }
-  .ok-note { color:var(--green); font-size:13px; font-weight:600; }
-  .err-note { color:var(--danger); font-size:13px; font-weight:600; }
-  @media (max-width:600px){ .vocab-grid, .gram-grid { grid-template-columns:1fr; } }
-</style>
-<body>
-<div class="topbar">
-  <div><h1>Daily Writing Practice</h1><div class="sub" id="today"></div></div>
-  <div class="streak" id="streak">🔥 0-day streak</div>
-</div>
-
-<div class="tabs">
-  <div class="tab active" data-tab="write">Write</div>
-  <div class="tab" data-tab="notebook">Notebook</div>
-  <div class="tab" data-tab="history">History</div>
-  <div class="tab" data-tab="settings" id="settingsTab">Settings</div>
-</div>
-
-<!-- WRITE TAB -->
-<div id="tab-write">
-  <div class="card">
-    <div class="label">Today's topic</div>
-    <div class="fmt" id="fmt"></div>
-    <div class="topic" id="topic"></div>
-    <div class="hint" id="topicHint"></div>
-    <div class="row">
-      <span class="hint">Goal: 100–150 words</span>
-      <button class="btn-ghost btn-sm" id="shuffleBtn">↻ Different topic</button>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <title>Daily Writing Practice</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="topbar">
+      <div>
+        <h1>Daily Writing Practice</h1>
+        <div class="sub" id="today"></div>
+      </div>
+      <div class="streak" id="streak">🔥 0-day streak</div>
     </div>
-  </div>
-  <div class="card">
-    <div class="label">Target words — work all of these into your essay</div>
-    <div id="targetList"></div>
-    <div class="row">
-      <span class="hint">✓ appears when you use a word. Mix of new words for this format and your notebook.</span>
-      <button class="btn-ghost btn-sm" id="targetShuffle">↻ Different words</button>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="write">Write</div>
+      <div class="tab" data-tab="notebook">Notebook</div>
+      <div class="tab" data-tab="history">History</div>
+      <div class="tab" data-tab="settings" id="settingsTab">Settings</div>
     </div>
-  </div>
-  <div class="card">
-    <textarea id="entry" placeholder="Write your entry here…"></textarea>
-    <div class="row">
-      <span class="wc" id="wc">0 words</span>
-      <div style="display:flex;gap:8px;align-items:center">
-        <span class="saved-note" id="savedNote" style="display:none">Saved ✓</span>
-        <button class="btn-ghost" id="newBtn">New entry</button>
-        <button class="btn-ghost" id="saveBtn">Save entry</button>
-        <button class="btn-primary" id="fbBtn">Get feedback</button>
+
+    <!-- WRITE TAB -->
+    <div id="tab-write">
+      <div class="card">
+        <div class="label">Today's topic</div>
+        <div class="fmt" id="fmt"></div>
+        <div class="topic" id="topic"></div>
+        <div class="hint" id="topicHint"></div>
+        <div class="row">
+          <span class="hint">Goal: 100–150 words</span>
+          <button class="btn-ghost btn-sm" id="shuffleBtn">↻ Different topic</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="label">Target words — work all of these into your essay</div>
+        <div id="targetList"></div>
+        <div class="row">
+          <span class="hint">
+            ✓ appears when you use a word. Mix of new words for this format and your notebook.
+          </span>
+          <button class="btn-ghost btn-sm" id="targetShuffle">↻ Different words</button>
+        </div>
+      </div>
+      <div class="card">
+        <textarea id="entry" placeholder="Write your entry here…"></textarea>
+        <div class="row">
+          <span class="wc" id="wc">0 words</span>
+          <div style="display: flex; gap: 8px; align-items: center">
+            <span class="saved-note" id="savedNote" style="display: none">Saved ✓</span>
+            <button class="btn-ghost" id="newBtn">New entry</button>
+            <button class="btn-ghost" id="saveBtn">Save entry</button>
+            <button class="btn-primary" id="fbBtn">Get feedback</button>
+          </div>
+        </div>
+      </div>
+      <div class="card" id="fbCard" style="display: none">
+        <div class="label">Feedback</div>
+        <div id="fbBody"></div>
+        <div class="stage" id="rwBox" hidden>
+          <div class="fb-title">✍️ Rewrite it</div>
+          <div class="hint">
+            Rewrite your entry using the feedback above, in your own words. Then compare it with your first
+            draft to see which fixes you applied.
+          </div>
+          <textarea id="rwText" placeholder="Your rewritten entry…"></textarea>
+          <div class="row">
+            <span class="wc" id="rwWc">0 words</span>
+            <button class="btn-primary" id="rwBtn">Compare with first draft</button>
+          </div>
+          <div id="rwResult"></div>
+        </div>
+        <div class="stage" id="mdBox" hidden>
+          <div class="fb-title">🏆 Model paragraph</div>
+          <div class="hint">
+            See one of your paragraphs rewritten at a professional level, with your ideas kept. Notice how the
+            sentences are joined and where the main point goes.
+          </div>
+          <div class="row">
+            <select id="mdPara" aria-label="Paragraph to rewrite"></select>
+            <button class="btn-primary" id="mdBtn">Show model</button>
+          </div>
+          <div id="mdResult"></div>
+        </div>
+        <div class="chat-box" id="chatBox" style="display: none">
+          <div class="fb-title">💬 Ask your coach</div>
+          <div id="chatLog"></div>
+          <div class="chat-row">
+            <input
+              type="text"
+              id="chatInput"
+              placeholder="Ask about the feedback… e.g., why is my sentence wrong?"
+            />
+            <button class="btn-primary" id="chatSend">Ask</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="card" id="fbCard" style="display:none">
-    <div class="label">Feedback</div>
-    <div id="fbBody"></div>
-    <div class="stage" id="rwBox" hidden>
-      <div class="fb-title">✍️ Rewrite it</div>
-      <div class="hint">Rewrite your entry using the feedback above, in your own words. Then compare it with your first draft to see which fixes you applied.</div>
-      <textarea id="rwText" placeholder="Your rewritten entry…"></textarea>
-      <div class="row"><span class="wc" id="rwWc">0 words</span><button class="btn-primary" id="rwBtn">Compare with first draft</button></div>
-      <div id="rwResult"></div>
-    </div>
-    <div class="stage" id="mdBox" hidden>
-      <div class="fb-title">🏆 Model paragraph</div>
-      <div class="hint">See one of your paragraphs rewritten at a professional level, with your ideas kept. Notice how the sentences are joined and where the main point goes.</div>
-      <div class="row"><select id="mdPara" aria-label="Paragraph to rewrite"></select><button class="btn-primary" id="mdBtn">Show model</button></div>
-      <div id="mdResult"></div>
-    </div>
-    <div class="chat-box" id="chatBox" style="display:none">
-      <div class="fb-title">💬 Ask your coach</div>
-      <div id="chatLog"></div>
-      <div class="chat-row">
-        <input type="text" id="chatInput" placeholder="Ask about the feedback… e.g., why is my sentence wrong?">
-        <button class="btn-primary" id="chatSend">Ask</button>
+
+    <!-- NOTEBOOK TAB -->
+    <div id="tab-notebook" style="display: none">
+      <div class="card">
+        <div class="label">Mistake history — counted automatically</div>
+        <div class="hint" style="margin-top: 0; margin-bottom: 8px">
+          Every time you get feedback, grammar issues are tallied by category. This runs on its own — separate
+          from the curated list below.
+        </div>
+        <div id="gStats"></div>
+      </div>
+      <div class="card">
+        <div class="label">Frequent grammar mistakes</div>
+        <div class="hint" style="margin-bottom: 10px; margin-top: 0">
+          Log mistakes here (or add them from feedback with one click). Repeats get counted, so your most
+          frequent mistakes rise to the top. Mark one fixed once it stops appearing.
+        </div>
+        <div class="gram-grid">
+          <input type="text" id="gWrong" placeholder="What you wrote (e.g., discussed about it)" />
+          <input type="text" id="gFix" placeholder="Correct version (e.g., discussed it)" />
+          <input type="text" id="gWhy" placeholder="Rule / note (optional)" />
+          <select id="gCat"></select>
+          <button class="btn-primary" id="gAdd">Add</button>
+        </div>
+        <div class="label" style="margin-top: 6px">
+          My mistakes (
+          <span id="gCount">0</span>
+          )
+        </div>
+        <div id="gMigrateBox"></div>
+        <div id="gList"></div>
+      </div>
+      <div class="card">
+        <div class="label">Add a word or phrase</div>
+        <div class="vocab-grid">
+          <input type="text" id="nWord" placeholder="Word or phrase" />
+          <select id="nReg">
+            <option>neutral</option>
+            <option>formal</option>
+            <option>casual</option>
+          </select>
+          <input type="text" id="nMean" placeholder="Brief meaning (words only)" />
+          <input type="text" id="nEx" placeholder="Example sentence / collocation" />
+          <button class="btn-primary" id="nAdd">Add</button>
+        </div>
+        <div class="label" style="margin-top: 6px">
+          My vocab (
+          <span id="vCount">0</span>
+          )
+        </div>
+        <div id="migrateBox"></div>
+        <input type="text" class="search" id="vSearch" placeholder="Search…" />
+        <div id="vList"></div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- NOTEBOOK TAB -->
-<div id="tab-notebook" style="display:none">
-  <div class="card">
-    <div class="label">Mistake history — counted automatically</div>
-    <div class="hint" style="margin-top:0;margin-bottom:8px">Every time you get feedback, grammar issues are tallied by category. This runs on its own — separate from the curated list below.</div>
-    <div id="gStats"></div>
-  </div>
-  <div class="card">
-    <div class="label">Frequent grammar mistakes</div>
-    <div class="hint" style="margin-bottom:10px;margin-top:0">Log mistakes here (or add them from feedback with one click). Repeats get counted, so your most frequent mistakes rise to the top. Mark one fixed once it stops appearing.</div>
-    <div class="gram-grid">
-      <input type="text" id="gWrong" placeholder="What you wrote (e.g., discussed about it)">
-      <input type="text" id="gFix" placeholder="Correct version (e.g., discussed it)">
-      <input type="text" id="gWhy" placeholder="Rule / note (optional)">
-      <select id="gCat"></select>
-      <button class="btn-primary" id="gAdd">Add</button>
-    </div>
-    <div class="label" style="margin-top:6px">My mistakes (<span id="gCount">0</span>)</div>
-    <div id="gMigrateBox"></div>
-    <div id="gList"></div>
-  </div>
-  <div class="card">
-    <div class="label">Add a word or phrase</div>
-    <div class="vocab-grid">
-      <input type="text" id="nWord" placeholder="Word or phrase">
-      <select id="nReg"><option>neutral</option><option>formal</option><option>casual</option></select>
-      <input type="text" id="nMean" placeholder="Brief meaning (words only)">
-      <input type="text" id="nEx" placeholder="Example sentence / collocation">
-      <button class="btn-primary" id="nAdd">Add</button>
-    </div>
-    <div class="label" style="margin-top:6px">My vocab (<span id="vCount">0</span>)</div>
-    <div id="migrateBox"></div>
-    <input type="text" class="search" id="vSearch" placeholder="Search…">
-    <div id="vList"></div>
-  </div>
-</div>
-
-<!-- HISTORY TAB -->
-<div id="tab-history" style="display:none">
-  <div class="card">
-    <div class="label">Past entries</div>
-    <div id="hList"></div>
-  </div>
-</div>
-
-<!-- SETTINGS TAB -->
-<div id="tab-settings" style="display:none">
-  <div class="card">
-    <div class="label">Writing coach</div>
-    <div class="hint" id="coachIntro" style="margin-top:0;margin-bottom:10px">Feedback and chat run on your Claude account. No API key is needed and nothing is billed per request. The first time you ask for feedback, Claude asks you to allow it for this page.</div>
-    <div id="keyBox" hidden>
-      <input type="password" id="keyInput" placeholder="sk-ant-…" autocomplete="off" spellcheck="false" aria-label="Anthropic API key">
-      <div class="row">
-        <span class="hint" style="margin-top:0">Get a key at console.anthropic.com.</span>
-        <div style="display:flex;gap:8px"><button class="btn-danger" id="keyClear">Remove key</button><button class="btn-primary" id="keySave">Save key</button></div>
+    <!-- HISTORY TAB -->
+    <div id="tab-history" style="display: none">
+      <div class="card">
+        <div class="label">Past entries</div>
+        <div id="hList"></div>
       </div>
     </div>
-    <div class="row" style="margin-top:0">
-      <span class="hint" id="coachStatus" style="margin-top:0"></span>
+
+    <!-- SETTINGS TAB -->
+    <div id="tab-settings" style="display: none">
+      <div class="card">
+        <div class="label">Writing coach</div>
+        <div class="hint" id="coachIntro" style="margin-top: 0; margin-bottom: 10px">
+          Feedback and chat run on your Claude account. No API key is needed and nothing is billed per
+          request. The first time you ask for feedback, Claude asks you to allow it for this page.
+        </div>
+        <div id="keyBox" hidden>
+          <input
+            type="password"
+            id="keyInput"
+            placeholder="sk-ant-…"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Anthropic API key"
+          />
+          <div class="row">
+            <span class="hint" style="margin-top: 0">Get a key at console.anthropic.com.</span>
+            <div style="display: flex; gap: 8px">
+              <button class="btn-danger" id="keyClear">Remove key</button>
+              <button class="btn-primary" id="keySave">Save key</button>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="margin-top: 0">
+          <span class="hint" id="coachStatus" style="margin-top: 0"></span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="label">Coach depth</div>
+        <div class="hint" style="margin-top: 0; margin-bottom: 10px">
+          Quick is fastest. Thorough takes longer and catches subtler issues.
+        </div>
+        <select id="tierInput">
+          <option value="quick">Quick</option>
+          <option value="default">Standard</option>
+          <option value="complex">Thorough</option>
+        </select>
+        <div class="row">
+          <span class="hint" id="modelStatus" style="margin-top: 0"></span>
+          <button class="btn-primary" id="modelSave">Save</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="label">Your data</div>
+        <div class="hint" id="dataIntro" style="margin-top: 0; margin-bottom: 10px">
+          Entries, vocab and grammar notes are saved to your Claude account, privately, so they follow you to
+          any device where you open this page. To bring over data from the old local version, click "Export
+          data" there, then import the file here.
+        </div>
+        <div class="hint" id="syncStatus" style="margin-top: 0; margin-bottom: 10px"></div>
+        <div class="row">
+          <button class="btn-ghost" id="exportBtn">⬇ Export data (.json)</button>
+          <label class="btn-ghost file-btn">
+            Import data (.json)
+            <input type="file" id="importFile" accept="application/json" style="display: none" />
+          </label>
+        </div>
+        <div class="hint" id="importStatus"></div>
+      </div>
     </div>
-  </div>
-  <div class="card">
-    <div class="label">Coach depth</div>
-    <div class="hint" style="margin-top:0;margin-bottom:10px">Quick is fastest. Thorough takes longer and catches subtler issues.</div>
-    <select id="tierInput"><option value="quick">Quick</option><option value="default">Standard</option><option value="complex">Thorough</option></select>
-    <div class="row"><span class="hint" id="modelStatus" style="margin-top:0"></span><button class="btn-primary" id="modelSave">Save</button></div>
-  </div>
-  <div class="card">
-    <div class="label">Your data</div>
-    <div class="hint" id="dataIntro" style="margin-top:0;margin-bottom:10px">Entries, vocab and grammar notes are saved to your Claude account, privately, so they follow you to any device where you open this page. To bring over data from the old local version, click "Export data" there, then import the file here.</div>
-    <div class="hint" id="syncStatus" style="margin-top:0;margin-bottom:10px"></div>
-    <div class="row">
-      <button class="btn-ghost" id="exportBtn">⬇ Export data (.json)</button>
-      <label class="btn-ghost file-btn">Import data (.json)<input type="file" id="importFile" accept="application/json" style="display:none"></label>
-    </div>
-    <div class="hint" id="importStatus"></div>
-  </div>
-</div>
-
-<script>
-(function(){
-  var $ = function(id){ return document.getElementById(id); };
-  var esc = function(s){ var d=document.createElement('div'); d.textContent=String(s==null?'':s); return d.innerHTML; };
-  function lsGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
-  function lsSet(k,v){ try { localStorage.setItem(k, v); } catch(e){} }
-  var load = function(k,f){ try { return JSON.parse(lsGet(k)) || f; } catch(e){ return f; } };
-
-  var entries = [], vocab = [], grammar = [], gstats = {}; // gstats: { "YYYY-MM-DD": { "<category id>": count } }
-  var shuffleOff = 0;
-
-  // ---------- Storage: your Claude account (private), or this browser as a fallback ----------
-  var STORE = { mode: 'loading', nbRef: null, entriesCol: null };
-  var nbDirty = false, nbWriting = false, entryQ = {};
-  function setSync(msg, cls){ var el = $('syncStatus'); el.textContent = msg; el.className = cls || 'hint'; }
-  function syncLabel(){
-    if (STORE.mode === 'db') setSync('Saved to your Claude account.', 'ok-note');
-    else if (STORE.mode === 'local') setSync('Data is saved in this browser only.', 'hint');
-    else setSync('Loading your notebook…', 'hint');
-  }
-  function storeError(e){
-    var code = e && e.code;
-    setSync(code === 'quota_exceeded'
-      ? 'Storage is full. Delete some old entries, then save again.'
-      : 'Couldn\'t save just now (' + ((e && e.message) || code || e) + '). Your next change will try again.', 'err-note');
-  }
-  function flushNotebook(){
-    if (nbWriting || !nbDirty || !STORE.nbRef) return;
-    nbDirty = false; nbWriting = true;
-    STORE.nbRef.set({ vocab: vocab, grammar: grammar, gramstats: gstats, updated: new Date().toISOString() })
-      .then(syncLabel, storeError)
-      .finally(function(){ nbWriting = false; flushNotebook(); });
-  }
-  function save(k, v){
-    if (STORE.mode === 'db') {
-      if (k === 'dw_entries') return; // entries are written one by one with persistEntry
-      nbDirty = true; flushNotebook();
-    } else if (STORE.mode === 'local') {
-      lsSet(k, JSON.stringify(v));
-    }
-  }
-  function persistEntry(e){
-    if (STORE.mode === 'db') {
-      var body = JSON.parse(JSON.stringify(e));
-      var ref = STORE.entriesCol.doc(e.id);
-      entryQ[e.id] = (entryQ[e.id] || Promise.resolve()).then(function(){ return ref.set(body); }).then(syncLabel, storeError);
-      return entryQ[e.id];
-    }
-    save('dw_entries', entries);
-    return Promise.resolve();
-  }
-  function normalize(){
-    // give older entries unique ids (multiple essays per day supported)
-    entries.forEach(function(e, i){
-      if (!e.id) { e.id = 'e' + (e.date || '').replace(/[^0-9]/g,'') + '-' + i; persistEntry(e); }
-    });
-    // meanings are for single words only — clear any stored on phrases
-    var changed = false;
-    vocab.forEach(function(v){
-      if (String(v.word||'').trim().indexOf(' ') > -1 && v.meaning) { v.meaning = ''; changed = true; }
-    });
-    if (changed) save('dw_vocab', vocab);
-  }
-
-  // ---------- Writing coach (runs on your Claude account) ----------
-  var sampleFn = null, coachChecked = false;
-  // 'claude' = running inside a Claude artifact; 'apikey' = standalone, using the learner's own Anthropic API key
-  var coachMode = 'claude';
-  var TIER_MODELS = { quick: 'claude-haiku-5-5', 'default': 'claude-sonnet-5-5', complex: 'claude-opus-5-5' };
-  function apiKey(){ return (lsGet('dw_api_key') || '').trim(); }
-  function apiKeySample(userContent, o){
-    var key = apiKey();
-    if (!key) return Promise.reject(new Error('Add your Anthropic API key in Settings to use the writing coach.'));
-    return fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'x-api-key': key,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: TIER_MODELS[(o && o.modelTier) || 'default'] || TIER_MODELS['default'],
-        max_tokens: (o && o.maxTokens) || 2000,
-        messages: [{ role: 'user', content: userContent }]
-      })
-    }).then(function(res){
-      return res.json().catch(function(){ return {}; }).then(function(j){
-        if (!res.ok) {
-          var msg = (j && j.error && j.error.message) || ('HTTP ' + res.status);
-          var err = new Error(res.status === 401 ? 'Your API key was rejected. Check it in Settings.' : msg);
-          if (res.status === 429) err.code = 'rate_limited';
-          throw err;
-        }
-        var text = (j.content || []).filter(function(b){ return b.type === 'text'; }).map(function(b){ return b.text; }).join('');
-        return { text: text };
-      });
-    });
-  }
-  function useApiKeyMode(){
-    coachMode = 'apikey';
-    sampleFn = apiKey() ? apiKeySample : null;
-  }
-  function hasApiKey(){ return !!sampleFn; }
-  function currentTier(){ var t = lsGet('dw_tier'); return (t === 'quick' || t === 'complex') ? t : 'default'; }
-  function coachError(e){
-    var code = e && e.code;
-    if (code === 'not_granted') return 'Claude access was declined for this page. You can allow it again from the page\'s Permissions menu.';
-    if (code === 'rate_limited') return 'Too many requests right now. Wait a minute, then try again.';
-    if (code === 'prompt_too_large') return 'This is too long to review in one go. Try a shorter entry.';
-    return (e && e.message) || String(code || e);
-  }
-  function callClaude(prompt, dataArr, maxTokens, opts){
-    if (!sampleFn) return Promise.reject(new Error('The writing coach isn\'t available in this view.'));
-    var userContent = prompt;
-    if (dataArr && dataArr.length) {
-      userContent += '\n\n' + dataArr.map(function(d){ return typeof d === 'string' ? d : JSON.stringify(d); }).join('\n\n');
-    }
-    var o = { modelTier: currentTier() };
-    if (opts && opts.cache === false) o.cache = false;
-    if (coachMode === 'apikey') o.maxTokens = maxTokens || 3000; // only the direct API needs a token cap
-    return sampleFn(userContent, o).then(function(r){ return (r && r.text) || ''; }, function(e){ throw new Error(coachError(e)); });
-  }
-
-  // ---------- Settings tab ----------
-  function refreshSettingsUI(){
-    var ok = hasApiKey();
-    if (coachMode === 'apikey') {
-      $('coachIntro').textContent = 'Feedback and chat use your own Anthropic API key, billed to your Anthropic account. The key is stored only in this browser and is sent only to api.anthropic.com.';
-      $('dataIntro').textContent = 'Entries, vocab and grammar notes are saved in this browser only. Use Export now and then to keep a backup, and Import to move data to another browser or device.';
-      $('keyBox').hidden = false;
-      $('coachStatus').textContent = ok ? 'API key saved. The coach is ready.' : 'Add your API key to turn on feedback and chat.';
-    } else {
-      $('coachStatus').textContent = ok ? 'Connected to your Claude account.' : (coachChecked ? 'The coach isn\'t available in this view. Open the page in Claude to use it.' : 'Connecting…');
-    }
-    $('coachStatus').className = ok ? 'ok-note' : 'hint';
-    $('tierInput').value = currentTier();
-    var tab = $('settingsTab');
-    if (ok || !coachChecked) tab.classList.remove('warn'); else tab.classList.add('warn');
-  }
-  function afterKeyChange(){ useApiKeyMode(); refreshSettingsUI(); renderVocab(); renderGrammarList(); }
-  $('keySave').onclick = function(){
-    var k = $('keyInput').value.trim();
-    if (!k) return;
-    lsSet('dw_api_key', k); $('keyInput').value = '';
-    afterKeyChange();
-  };
-  $('keyClear').onclick = function(){
-    try { localStorage.removeItem('dw_api_key'); } catch(e){}
-    $('keyInput').value = '';
-    afterKeyChange();
-  };
-  $('modelSave').onclick = function(){
-    lsSet('dw_tier', $('tierInput').value);
-    $('modelStatus').textContent = 'Saved.';
-    $('modelStatus').className = 'ok-note';
-    setTimeout(function(){ $('modelStatus').textContent = ''; }, 2000);
-  };
-
-  // ---------- Data export / import ----------
-  var downloadsApi = null;
-  function exportData(){
-    var payload = {
-      dw_entries: entries, dw_vocab: vocab, dw_grammar: grammar, dw_gramstats: gstats,
-      exportedAt: new Date().toISOString(), source: 'daily-writing-practice'
-    };
-    var status = $('importStatus');
-    var filename = 'daily-writing-practice-backup-' + dstr(new Date()) + '.json';
-    if (!downloadsApi) {
-      // Standalone browser: plain file download
-      try {
-        var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-        var a = document.createElement('a');
-        a.href = URL.createObjectURL(blob); a.download = filename;
-        document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
-        status.textContent = '';
-      } catch(e) { status.textContent = 'Export failed: ' + ((e && e.message) || e); status.className = 'err-note'; }
-      return;
-    }
-    downloadsApi.save({ filename: filename, data: JSON.stringify(payload, null, 2) })
-      .then(function(){ status.textContent = ''; }, function(e){
-        if (e && (e.code === 'declined' || e.code === 'cancelled')) return;
-        status.textContent = 'Export failed: ' + ((e && e.message) || e); status.className = 'err-note';
-      });
-  }
-  $('exportBtn').onclick = exportData;
-  $('importFile').addEventListener('change', function(e){
-    var file = e.target.files && e.target.files[0];
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function(){
-      var status = $('importStatus');
-      try {
-        var data = JSON.parse(reader.result);
-        var imported = 0;
-        if (Array.isArray(data.dw_entries)) {
-          var have = {}; entries.forEach(function(x){ have[x.id] = 1; });
-          data.dw_entries.forEach(function(x, i){
-            if (!x || !x.text) return;
-            if (!x.id) x.id = 'e' + String(x.date || '').replace(/[^0-9]/g,'') + '-imp' + i;
-            x.id = String(x.id).replace(/[^A-Za-z0-9_\-.~:@+]/g, '_');
-            if (have[x.id]) return;
-            entries.push(x); have[x.id] = 1; persistEntry(x); imported++;
-          });
-          if (STORE.mode !== 'db') save('dw_entries', entries);
-        }
-        if (Array.isArray(data.dw_vocab)) {
-          data.dw_vocab.forEach(function(v){
-            if (v && v.word && !vocab.some(function(x){ return x.word.toLowerCase() === String(v.word).toLowerCase(); })) { vocab.push(v); imported++; }
-          });
-        }
-        if (Array.isArray(data.dw_grammar)) {
-          data.dw_grammar.forEach(function(g){
-            if (g && g.original && !grammar.some(function(x){ return normGram(x.original) === normGram(g.original); })) { grammar.push(g); imported++; }
-          });
-        }
-        if (data.dw_gramstats && typeof data.dw_gramstats === 'object') {
-          Object.keys(data.dw_gramstats).forEach(function(d){
-            if (!gstats[d]) { gstats[d] = data.dw_gramstats[d]; imported++; }
-          });
-        }
-        if (!imported) throw new Error('Nothing new in that file.');
-        save('dw_vocab', vocab);
-        status.textContent = 'Imported ' + imported + ' item' + (imported === 1 ? '' : 's') + ' ✓';
-        status.className = 'ok-note';
-        renderAll();
-      } catch(err){
-        status.textContent = 'Import failed: ' + (err && err.message || err);
-        status.className = 'err-note';
-      }
-    };
-    reader.readAsText(file);
-    e.target.value = '';
-  });
-
-  // ---------- Topics ----------
-  var FORMATS = [
-    { name:'Reflection', hint:'Casual register. Practice past tenses and expressing feelings.',
-      topics:['Describe something you changed your mind about recently.','What was the best decision you made this year, and why?','Write about a habit you are trying to build or break.','Describe a place that makes you feel calm.','What did you learn about yourself this month?','Write about a small moment this week that made you smile.','Write about a fear you have overcome, at least partly.','What piece of advice has stuck with you the longest, and why?','Describe your perfect ordinary day — nothing special, just good.','Write about something you are proud of that few people know about.','How have you changed in the past five years?','Write about a purchase that genuinely improved your daily life.','What would you tell yourself one year ago?','Which skill do you wish you had started learning earlier, and why?','What does "success" mean to you right now?'] },
-    { name:'Opinion', hint:'Persuasive register. Use hedging: "It seems to me…", "One could argue…"',
-      topics:['Should companies allow fully remote work? Give your view.','Is social media doing more harm than good?','Should schools teach financial skills instead of some traditional subjects?','Is it better to be a specialist or a generalist in your career?','Do you think AI tools make people better or worse writers?','Should cities ban cars from their centers?','Is job-hopping good or bad for a career?','Should companies monitor their employees\' productivity? Why or why not?','Do exams measure real ability? Give your view.','Is a four-day work week realistic for most industries?','Is it better to rent or to own a home?','Should children under 13 have smartphones?','Is competition or cooperation more important in the workplace?','Is space exploration worth the cost?','Should tipping be replaced by higher fixed wages?'] },
-    { name:'Professional email', hint:'Formal register. Practice polite requests and clear structure.',
-      topics:['Write an email asking your manager for time off next month.','Write an email politely declining a meeting invitation.','Write a follow-up email after a job interview.','Write an email apologizing to a client for a delayed delivery.','Write an email introducing yourself to a new team.','Write an email requesting feedback on a project you finished.','Write an email reminding a colleague about an overdue task — politely.','Write an email making the case for a salary raise.','Write an email escalating a recurring problem to senior management.','Write a welcome email to a new client starting a project with you.','Write an email rescheduling a meeting at the last minute.','Write a thank-you email to a mentor who helped your career.','Write a handover email before going on vacation.','Write an email admitting a mistake you made and proposing a fix.','Write an email asking a busy executive for 30 minutes of their time.'] },
-    { name:'Description', hint:'Practice precise adjectives and sensory language.',
-      topics:['Describe your ideal working environment in detail.','Describe a dish from your country to someone who has never tried it.','Describe the view from your window right now.','Describe a person who influenced you, focusing on their character.','Describe a piece of technology you use daily as if to someone from 1950.','Describe your city at night.','Describe a market or shopping street you know well.','Describe your morning routine in detail, from waking up to leaving home.','Describe one object you would save from a fire, and what it means to you.','Describe a festival or celebration in your country.','Describe your favorite room and why you like being in it.','Describe the current season where you live — what you see, hear, and smell.','Describe a photo you treasure as if the reader cannot see it.','Describe public transport in your city to a first-time visitor.','Describe a sound or smell that instantly brings back a memory.'] },
-    { name:'Summary & explanation', hint:'Formal register. Practice linking words: "consequently", "in contrast".',
-      topics:['Summarize a news story you read this week in your own words.','Explain how something you know well works (a process, a tool, a recipe).','Explain a concept from your job to a complete beginner.','Summarize the plot of the last film or series you watched.','Explain why a skill you have is worth learning.','Explain a tradition from your culture to a foreign friend.','Explain the rules of a game or sport you enjoy to a newcomer.','Summarize a podcast episode or video you watched recently.','Explain an economic concept (e.g., inflation) in the simplest terms you can.','Explain step by step how to cook your signature dish.','Explain what your company or team actually does, for an outsider.','Explain a proverb from your language and when people use it.','Explain how the internet changed one specific industry you know.','Summarize the main idea of a book you have read, in one paragraph.','Explain one grammar or spelling rule of your native language to a foreigner.'] },
-    { name:'Persuasion', hint:'Practice strong verbs and structured arguments.',
-      topics:['Convince a friend to visit your country.','Persuade your team to adopt a new tool or habit.','Write a short pitch for a product you love.','Convince someone to read your favorite book.','Persuade your future self to keep writing daily.','Argue for one change that would improve your workplace.','Persuade your boss to pay for a training course you want.','Convince a friend to start exercising with you.','Persuade someone to try your hobby for one month.','Pitch a solution to a real problem in your neighborhood.','Convince your family to travel somewhere they have never considered.','Argue for saving money versus enjoying it now — pick a side.','Persuade a skeptical colleague to try an AI tool.','Convince a friend to leave a job that makes them unhappy.','Persuade readers to spend less time on their phones.'] },
-    { name:'Storytelling', hint:'Practice narrative tenses and vivid verbs.',
-      topics:['Tell the story of a journey that did not go as planned.','Write about your first day at a job or school.','Tell a story that starts with: "The message arrived at midnight."','Write about a time you had to make a quick decision.','Tell the story of how you met a good friend.','Write about a misunderstanding that turned out to be funny.','Tell the story of a time you got completely lost.','Write about an embarrassing moment that taught you something.','Tell a story that starts with: "The door was already open."','Write about a childhood memory in vivid detail.','Tell the story of a day when everything unexpectedly went right.','Write about a stranger who helped you when you needed it.','Tell the story of a failure and what happened afterwards.','Write about the most memorable meal of your life.','Tell a story that ends with: "…and that is why I never did it again."'] }
-  ];
-
-  var TARGET_POOL = {
-    'Reflection': [
-      {w:'realize', m:'become aware of something'}, {w:'gradually', m:'slowly, over time'},
-      {w:'reflect on', m:'think deeply about'}, {w:'tend to', m:'usually do'},
-      {w:'grateful', m:'feeling thankful'}, {w:'accomplish', m:'succeed in doing'},
-      {w:'turning point', m:'a moment of big change'}, {w:'hindsight', m:'understanding gained after the event'},
-      {w:'determined', m:'firmly decided'}, {w:'overcome', m:'succeed against a difficulty'}
-    ],
-    'Opinion': [
-      {w:'furthermore', m:'in addition'}, {w:'drawback', m:'a disadvantage'},
-      {w:'considerable', m:'large in amount or degree'}, {w:'inevitable', m:'impossible to avoid'},
-      {w:'advocate', m:'publicly support'}, {w:'outweigh', m:'be greater or more important than'},
-      {w:'whereas', m:'while, in contrast'}, {w:'consequence', m:'a result, often negative'},
-      {w:'arguably', m:'it can be argued that'}, {w:'undermine', m:'make weaker'}
-    ],
-    'Professional email': [
-      {w:'regarding', m:'about, concerning'}, {w:'appreciate', m:'be grateful for'},
-      {w:'promptly', m:'quickly, without delay'}, {w:'accommodate', m:'adjust to fit someone\'s needs'},
-      {w:'clarify', m:'make clearer'}, {w:'inconvenience', m:'trouble or difficulty caused'},
-      {w:'confirm', m:'state that something is certain'}, {w:'attached', m:'included with this email'},
-      {w:'follow up', m:'check on progress later'}, {w:'at your earliest convenience', m:'as soon as suits you'}
-    ],
-    'Description': [
-      {w:'vivid', m:'producing clear, strong images'}, {w:'spacious', m:'having plenty of room'},
-      {w:'bustling', m:'full of busy activity'}, {w:'fragrant', m:'having a pleasant smell'},
-      {w:'distinctive', m:'clearly different from others'}, {w:'atmosphere', m:'the mood or feeling of a place'},
-      {w:'cozy', m:'comfortable and warm'}, {w:'striking', m:'very noticeable, impressive'},
-      {w:'blend', m:'mix together smoothly'}, {w:'scattered', m:'spread around irregularly'}
-    ],
-    'Summary & explanation': [
-      {w:'essentially', m:'in its most basic nature'}, {w:'consist of', m:'be made up of'},
-      {w:'consequently', m:'as a result'}, {w:'in contrast', m:'showing a clear difference'},
-      {w:'illustrate', m:'show or explain by example'}, {w:'significant', m:'important or large'},
-      {w:'enable', m:'make possible'}, {w:'process', m:'a series of steps'},
-      {w:'briefly', m:'in few words'}, {w:'overall', m:'considering everything'}
-    ],
-    'Persuasion': [
-      {w:'compelling', m:'very convincing'}, {w:'benefit', m:'a helpful effect'},
-      {w:'guarantee', m:'promise with certainty'}, {w:'effortless', m:'needing no effort'},
-      {w:'transform', m:'change completely'}, {w:'invest', m:'spend now for future gain'},
-      {w:'remarkable', m:'unusual, worth noticing'}, {w:'hesitate', m:'pause because of doubt'},
-      {w:'worthwhile', m:'worth the time or cost'}, {w:'convinced', m:'fully persuaded'}
-    ],
-    'Storytelling': [
-      {w:'suddenly', m:'quickly and unexpectedly'}, {w:'eventually', m:'in the end, after some time'},
-      {w:'glance', m:'a quick look'}, {w:'whisper', m:'speak very quietly'},
-      {w:'relieved', m:'happy that a worry is gone'}, {w:'astonished', m:'very surprised'},
-      {w:'rush', m:'move or act very fast'}, {w:'grab', m:'take quickly'},
-      {w:'silence', m:'complete absence of sound'}, {w:'moment', m:'a very short period of time'}
-    ]
-  };
-
-  function dayOfYear(d){ return Math.floor((d - new Date(d.getFullYear(),0,0)) / 864e5); }
-  function currentTopic(){
-    var now = new Date();
-    var fmt = FORMATS[now.getDay()];
-    var t = fmt.topics[(dayOfYear(now) + shuffleOff) % fmt.topics.length];
-    return { fmt:fmt.name, hint:fmt.hint, topic:t };
-  }
-  function renderTopic(){
-    var c = currentTopic();
-    $('fmt').textContent = c.fmt;
-    $('topic').textContent = c.topic;
-    $('topicHint').textContent = c.hint;
-  }
-  $('shuffleBtn').onclick = function(){ shuffleOff++; renderTopic(); };
-
-  // ---------- Target words ----------
-  var targetOff = 0;
-  function currentTargets(){
-    var c = currentTopic();
-    var pool = TARGET_POOL[c.fmt] || TARGET_POOL['Reflection'];
-    var d = dayOfYear(new Date());
-    var picks = [];
-    for (var i = 0; picks.length < 3 && i < pool.length; i++) {
-      var cand = pool[(d * 3 + targetOff + i) % pool.length];
-      if (!picks.some(function(p){ return p.w === cand.w; })) picks.push({ w: cand.w, m: cand.m, src: 'new' });
-    }
-    // add up to 2 recent single words from the notebook (with meanings)
-    var nb = vocab.filter(function(v){ return vocabType(v) === 'word' && v.meaning; })
-      .slice(targetOff % 2, targetOff % 2 + 2)
-      .map(function(v){ return { w: v.word, m: v.meaning, src: 'notebook' }; });
-    nb.forEach(function(n){
-      if (!picks.some(function(p){ return p.w.toLowerCase() === n.w.toLowerCase(); })) picks.push(n);
-    });
-    // top up from the pool if the notebook had too few
-    for (var j = 3; picks.length < 5 && j < pool.length + 3; j++) {
-      var extra = pool[(d * 3 + targetOff + j) % pool.length];
-      if (!picks.some(function(p){ return p.w === extra.w; })) picks.push({ w: extra.w, m: extra.m, src: 'new' });
-    }
-    return picks;
-  }
-  function wordUsed(word, text){
-    var stem = word.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return new RegExp('\\b' + stem + '(s|es|ed|d|ing)?\\b', 'i').test(text);
-  }
-  function renderTargets(){
-    var text = $('entry').value;
-    $('targetList').innerHTML = currentTargets().map(function(t){
-      var used = wordUsed(t.w, text);
-      return '<div class="tw' + (used ? ' used' : '') + '"><span class="mark">' + (used ? '✓' : '○') + '</span>' +
-        '<span class="twword">' + esc(t.w) + '</span>' +
-        (t.src === 'notebook' ? '<span class="vtag">notebook</span>' : '') +
-        '<span class="twmean">' + esc(t.m) + '</span></div>';
-    }).join('');
-  }
-  $('targetShuffle').onclick = function(){ targetOff++; renderTargets(); };
-
-  // ---------- Streak ----------
-  function dstr(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
-  function renderStreak(){
-    var days = {};
-    entries.forEach(function(e){ days[e.date] = 1; });
-    var streak = 0, d = new Date();
-    if (!days[dstr(d)]) d.setDate(d.getDate()-1); // streak survives if today not yet written
-    while (days[dstr(d)]) { streak++; d.setDate(d.getDate()-1); }
-    $('streak').textContent = '🔥 ' + streak + '-day streak';
-  }
-
-  // ---------- Word count ----------
-  function countWords(s){ var m = s.trim().match(/\S+/g); return m ? m.length : 0; }
-  $('entry').addEventListener('input', function(){
-    var n = countWords(this.value);
-    var el = $('wc');
-    el.textContent = n + ' words';
-    el.className = 'wc' + (n >= 100 && n <= 200 ? ' ok' : '');
-    renderTargets();
-  });
-
-  // ---------- Save entry ----------
-  var lastFeedback = null;
-  var currentEntryId = null;
-  $('saveBtn').onclick = function(){ saveEntry(false); };
-  function saveEntry(silent){
-    var text = $('entry').value.trim();
-    if (!text || STORE.mode === 'loading') return;
-    var now = new Date();
-    var c = currentTopic();
-    var existing = currentEntryId && entries.find(function(e){ return e.id === currentEntryId; });
-    if (existing) {
-      existing.text = text; existing.topic = c.topic; existing.fmt = c.fmt;
-      existing.feedback = lastFeedback || existing.feedback;
-    } else {
-      var e = { id: 'e' + Date.now().toString(36), date: dstr(now), time: now.toTimeString().slice(0,5),
-        topic: c.topic, fmt: c.fmt, text: text, feedback: lastFeedback };
-      entries.push(e);
-      currentEntryId = e.id;
-    }
-    persistEntry(existing || entries[entries.length - 1]);
-    renderStreak(); renderHistory();
-    if (silent) return;
-    var note = $('savedNote'); note.style.display = 'inline';
-    setTimeout(function(){ note.style.display = 'none'; }, 2000);
-  }
-  $('newBtn').onclick = function(){
-    currentEntryId = null;
-    lastFeedback = null;
-    $('entry').value = '';
-    $('entry').dispatchEvent(new Event('input'));
-    $('fbCard').style.display = 'none';
-    $('fbBody').innerHTML = '';
-    resetStages();
-    resetChat(false);
-    $('entry').focus();
-  };
-
-  // ---------- Feedback ----------
-  function extractJSON(s){
-    var a = s.indexOf('{'), b = s.lastIndexOf('}');
-    if (a === -1 || b === -1) return null;
-    try { return JSON.parse(s.slice(a, b+1)); } catch(e){ return null; }
-  }
-  function addBtn(word, reg, ex, mean){
-    return '<button class="btn-sm btn-add" data-word="' + esc(word) + '" data-reg="' + esc(reg||'neutral') + '" data-ex="' + esc(ex||'') + '" data-mean="' + esc(mean||'') + '">+ Notebook</button>';
-  }
-  function addGramBtn(orig, fix, why, cat){
-    return '<button class="btn-sm btn-add btn-addg" data-orig="' + esc(orig) + '" data-fix="' + esc(fix||'') + '" data-why="' + esc(why||'') + '" data-cat="' + esc(cat||'') + '">+ Notebook</button>';
-  }
-  function renderFeedback(fb, raw){
-    var h = '';
-    if (!fb) {
-      h = '<div class="overall">' + esc(raw) + '</div>';
-    } else {
-      if (fb.overall) h += '<div class="overall">' + esc(fb.overall) + '</div>';
-      if (fb.strengths && fb.strengths.length) {
-        h += '<div class="fb-section"><div class="fb-title">💪 What worked</div>';
-        fb.strengths.forEach(function(s){ h += '<div class="fb-item">' + esc(s) + '</div>'; });
-        h += '</div>';
-      }
-      if (fb.wordChoice && fb.wordChoice.length) {
-        h += '<div class="fb-section"><div class="fb-title">🎯 Word choice</div>';
-        fb.wordChoice.forEach(function(w){
-          h += '<div class="fb-item word"><span class="orig">' + esc(w.original) + '</span> → <span class="better">' + esc(w.better) + '</span> ' + addBtn(w.better, 'neutral', w.why) + '<span class="why">' + esc(w.why||'') + '</span></div>';
-        });
-        h += '</div>';
-      }
-      if (fb.upgrades && fb.upgrades.length) {
-        h += '<div class="fb-section"><div class="fb-title">✨ Level up (yours was fine — this is stronger)</div>';
-        fb.upgrades.forEach(function(u){
-          h += '<div class="fb-item up"><span class="soso">' + esc(u.original) + '</span> → <span class="better">' + esc(u.better) + '</span> ' + addBtn(u.better, 'neutral', u.why) + '<span class="why">' + esc(u.why||'') + '</span></div>';
-        });
-        h += '</div>';
-      }
-      if (fb.grammar && fb.grammar.length) {
-        h += '<div class="fb-section"><div class="fb-title">📝 Grammar & naturalness</div>';
-        fb.grammar.forEach(function(g){
-          var ctag = g.category ? '<span class="gtag">' + esc(catLabel(catFromString(g.category))) + '</span> ' : '';
-          h += '<div class="fb-item gram"><span class="orig">' + esc(g.original) + '</span> → <span class="better">' + esc(g.fix) + '</span>' + ctag + ' ' + addGramBtn(g.original, g.fix, g.why, g.category) + '<span class="why">' + esc(g.why||'') + '</span></div>';
-        });
-        h += '</div>';
-      }
-      h += renderStructure(fb.structure, $('entry').value);
-      if (fb.vocab && fb.vocab.length) {
-        h += '<div class="fb-section"><div class="fb-title">📚 Words worth learning</div>';
-        fb.vocab.forEach(function(v){
-          h += '<div class="fb-item vocab"><div><span class="vword">' + esc(v.word) + '</span><span class="vtag">' + esc(v.register||'neutral') + '</span>' +
-            (v.meaning ? '<div class="vmean">' + esc(v.meaning) + '</div>' : '') +
-            '<div class="vex">' + esc(v.example||'') + '</div></div>' + addBtn(v.word, v.register, v.example, v.meaning) + '</div>';
-        });
-        h += '</div>';
-      }
-    }
-    $('fbBody').innerHTML = h;
-    $('fbCard').style.display = 'block';
-    bindAddButtons($('fbBody'));
-    if (fb) showStages(fb);
-  }
-  function bindAddButtons(root){
-    Array.prototype.forEach.call(root.querySelectorAll('.btn-add'), function(b){
-      b.onclick = function(){
-        if (b.classList.contains('btn-addg')) addGrammar(b.dataset.orig, b.dataset.fix, b.dataset.why, b.dataset.cat);
-        else addVocab(b.dataset.word, b.dataset.reg, b.dataset.ex, b.dataset.mean);
-        b.textContent = 'Added ✓'; b.disabled = true;
-      };
-    });
-  }
-  $('fbBtn').onclick = function(){
-    var text = $('entry').value.trim();
-    if (!text) { $('fbBody').innerHTML = '<div class="empty">Write something first!</div>'; $('fbCard').style.display='block'; return; }
-    if (!hasApiKey()) {
-      $('fbBody').innerHTML = '<div class="empty">' + (coachChecked ? (coachMode === 'apikey' ? 'Add your Anthropic API key in Settings to get feedback.' : 'The writing coach isn\'t available in this view. Open this page in Claude to get feedback.') :'Still connecting to Claude. Try again in a moment.') + '</div>';
-      $('fbCard').style.display = 'block'; return;
-    }
-    var btn = $('fbBtn'); btn.disabled = true; btn.textContent = 'Reviewing…';
-    $('fbBody').innerHTML = '<div class="spinner">Your coach is reading your entry…</div>';
-    $('fbCard').style.display = 'block';
-    var c = currentTopic();
-    var prompt = 'You are a supportive English writing coach for an intermediate learner working toward professional-level writing. The topic was: "' + c.topic + '" (' + c.fmt + '). Review the writing sample provided in the data. Respond with ONLY valid JSON (no markdown fences, no extra text) in exactly this shape: {"overall":"2-3 sentence assessment of the writing","strengths":["1-2 specific things done well"],"wordChoice":[{"original":"weak, wrong, or repeated word/phrase as written","better":"stronger alternative","why":"one short sentence"}],"upgrades":[{"original":"a word/phrase that is CORRECT but plain, so-so, or below professional level","better":"a more precise, natural, or professional alternative","why":"one short sentence on why it is stronger"}],"grammar":[{"original":"incorrect or unnatural phrase as written","fix":"corrected version","why":"one short sentence","category":"one of: tense, sva, plural, articles, prep, gerund, wordform, wordorder, cond, passive, punct, other"}],"vocab":[{"word":"a useful word or phrase for this learner","register":"formal, neutral, or casual","meaning":"brief plain-English meaning if the item is a single word; empty string for multi-word phrases","example":"a short example sentence showing a typical collocation"}],"structure":{"paragraphs":[{"mainPoint":"the paragraph\'s main point in 12 words or fewer","clear":true,"note":"one short sentence: is the main point stated early and does every sentence support it?"}],"flow":"1-2 sentences on how ideas and sentences connect: name specific places where a link is missing, abrupt, or overused","variety":"1-2 sentences on sentence length and pattern variety: do too many sentences start the same way or follow the same subject-verb-object pattern?","tryThis":{"original":"2-3 consecutive sentences quoted exactly from the text that would read better restructured","better":"the same ideas restructured (combined, reordered, or with a subordinate clause) into smoother writing","why":"one short sentence naming the technique"}}}. Rules: structure.paragraphs has one item per paragraph in order (a paragraph is a block separated by a line break); set clear to false when the main point is missing, buried, or split. max 5 wordChoice items, 2-4 upgrades items (always find some — even good writing has words that could be sharper; upgrades are for acceptable words, wordChoice is for weak ones), max 5 grammar items, exactly 3 vocab items (mix single words and phrases when possible). Quote "original" text exactly as the learner wrote it. If a category has no issues, use an empty array (except upgrades). Be encouraging but specific.' +
-      ' The learner was also asked to use these target words in the essay: ' + currentTargets().map(function(t){ return t.w; }).join(', ') + '. At the end of the "overall" field, briefly comment on the target words: which were used naturally, which were used awkwardly (and how to fix), and which were missed.';
-    callClaude(prompt, [text]).then(function(s){
-      if (typeof s !== 'string') s = String(s);
-      var fb = extractJSON(s);
-      lastFeedback = fb || { overall: s };
-      if (fb) recordGramStats(fb.grammar || [], text);
-      renderFeedback(fb, s);
-      resetChat(true);
-      saveEntry(true);
-    }).catch(function(e){
-      $('fbBody').innerHTML = '<div class="empty">Feedback failed. ' + esc(e && e.message || e) + '</div>';
-    }).finally(function(){
-      btn.disabled = false; btn.textContent = 'Get feedback';
-    });
-  };
-
-  // ---------- Structure ----------
-  function splitParas(text){ return String(text||'').split(/\n\s*\n|\n/).map(function(p){ return p.trim(); }).filter(Boolean); }
-  function splitSentences(text){
-    return String(text||'').replace(/\s+/g,' ').trim().split(/(?<=[.!?…])\s+(?=["'“‘(]?[A-Z0-9])/).map(function(x){ return x.trim(); }).filter(function(x){ return countWords(x) > 0; });
-  }
-  function sentenceStats(text){
-    var ss = splitSentences(text);
-    if (!ss.length) return null;
-    var lens = ss.map(countWords);
-    var avg = lens.reduce(function(a,b){ return a+b; }, 0) / lens.length;
-    var openers = {};
-    ss.forEach(function(x){ var w = (x.match(/[A-Za-z']+/) || [''])[0].toLowerCase(); if (w) openers[w] = (openers[w]||0) + 1; });
-    var repeated = Object.keys(openers).filter(function(w){ return openers[w] >= 3 || (ss.length >= 4 && openers[w] / ss.length >= 0.4); })
-      .sort(function(a,b){ return openers[b] - openers[a]; });
-    return { n: ss.length, avg: avg, min: Math.min.apply(null, lens), max: Math.max.apply(null, lens), repeated: repeated, openers: openers };
-  }
-  function renderStructure(st, text){
-    var stats = sentenceStats(text);
-    if (!st && !stats) return '';
-    var h = '<div class="fb-section"><div class="fb-title">🧱 Structure</div>';
-    if (stats) {
-      var flat = stats.n >= 4 && (stats.max - stats.min) <= 6;
-      h += '<div class="chips"><span class="chip">' + stats.n + ' sentences</span>' +
-        '<span class="chip">avg ' + stats.avg.toFixed(1) + ' words</span>' +
-        '<span class="chip' + (flat ? ' warn' : '') + '">range ' + stats.min + '–' + stats.max + (flat ? ' · similar lengths' : '') + '</span>' +
-        stats.repeated.map(function(w){ return '<span class="chip warn">' + stats.openers[w] + ' start with “' + esc(w.charAt(0).toUpperCase() + w.slice(1)) + '”</span>'; }).join('') +
-        '</div>';
-    }
-    if (st && st.paragraphs && st.paragraphs.length) {
-      st.paragraphs.forEach(function(p, i){
-        h += '<div class="fb-item"><div class="para"><span class="pn">¶' + (i+1) + '</span><div class="pt"><b>' + esc(p.mainPoint || '(no clear main point)') + '</b>' +
-          '<span class="badge ' + (p.clear === false ? 'no' : 'ok') + '">' + (p.clear === false ? 'unclear' : 'clear') + '</span>' +
-          (p.note ? '<span class="why">' + esc(p.note) + '</span>' : '') + '</div></div></div>';
-      });
-    }
-    if (st && st.flow) h += '<div class="fb-item"><b>Flow.</b> ' + esc(st.flow) + '</div>';
-    if (st && st.variety) h += '<div class="fb-item"><b>Variety.</b> ' + esc(st.variety) + '</div>';
-    if (st && st.tryThis && st.tryThis.original) {
-      h += '<div class="fb-item up"><b>Try restructuring</b><div class="side"><div><div class="label">Yours</div>' + esc(st.tryThis.original) + '</div>' +
-        '<div class="model"><div class="label">Restructured</div>' + esc(st.tryThis.better || '') + '</div></div>' +
-        (st.tryThis.why ? '<span class="why" style="margin-top:6px">' + esc(st.tryThis.why) + '</span>' : '') + '</div>';
-    }
-    return h + '</div>';
-  }
-
-  // ---------- Rewrite & model paragraph ----------
-  function resetStages(){
-    $('rwBox').hidden = true; $('mdBox').hidden = true;
-    $('rwText').value = ''; $('rwResult').innerHTML = ''; $('mdResult').innerHTML = '';
-    $('rwWc').textContent = '0 words';
-  }
-  function showStages(fb){
-    if (!hasApiKey() && !fb.compare && !fb.model) return;
-    var text = $('entry').value;
-    $('rwBox').hidden = false; $('mdBox').hidden = false;
-    $('rwText').value = fb.rewrite || text;
-    $('rwText').dispatchEvent(new Event('input'));
-    $('rwResult').innerHTML = fb.compare ? renderCompare(fb.compare) : '';
-    var paras = splitParas(text);
-    $('mdPara').innerHTML = paras.map(function(p, i){
-      var short = p.length > 48 ? p.slice(0, 48) + '…' : p;
-      return '<option value="' + i + '">Paragraph ' + (i+1) + ': ' + esc(short) + '</option>';
-    }).join('');
-    if (fb.model) { $('mdResult').innerHTML = renderModel(fb.model); bindAddButtons($('mdResult')); }
-    else $('mdResult').innerHTML = '';
-  }
-  $('rwText').addEventListener('input', function(){ $('rwWc').textContent = countWords(this.value) + ' words'; });
-
-  function renderCompare(c){
-    var lv = { big: 'Big improvement', clear: 'Clear improvement', small: 'Small improvement' };
-    var h = '<div class="fb-section">';
-    if (c.improvement && lv[c.improvement]) h += '<span class="verdict ' + c.improvement + '">' + lv[c.improvement] + '</span>';
-    if (c.verdict) h += '<div class="overall">' + esc(c.verdict) + '</div>';
-    if (c.applied && c.applied.length) {
-      h += '<div class="fb-section"><div class="fb-title">✅ Fixes you applied</div>';
-      c.applied.forEach(function(a){ h += '<div class="fb-item up">' + esc(a.point) + (a.how ? '<span class="why">“' + esc(a.how) + '”</span>' : '') + '</div>'; });
-      h += '</div>';
-    }
-    if (c.missed && c.missed.length) {
-      h += '<div class="fb-section"><div class="fb-title">↩️ Still to fix</div>';
-      c.missed.forEach(function(m){ h += '<div class="fb-item word">' + esc(m.point) + (m.tip ? '<span class="why">' + esc(m.tip) + '</span>' : '') + '</div>'; });
-      h += '</div>';
-    }
-    if (c.newIssues && c.newIssues.length) {
-      h += '<div class="fb-section"><div class="fb-title">⚠️ New issues in the rewrite</div>';
-      c.newIssues.forEach(function(g){ h += '<div class="fb-item gram"><span class="orig">' + esc(g.original) + '</span> → <span class="better">' + esc(g.fix) + '</span><span class="why">' + esc(g.why||'') + '</span></div>'; });
-      h += '</div>';
-    }
-    return h + '</div>';
-  }
-  $('rwBtn').onclick = function(){
-    var draft = $('entry').value.trim(), rw = $('rwText').value.trim();
-    if (!lastFeedback || !rw) return;
-    if (rw === draft) { $('rwResult').innerHTML = '<div class="empty">Change something first. Your rewrite is the same as the first draft.</div>'; return; }
-    var btn = $('rwBtn'); btn.disabled = true; btn.textContent = 'Comparing…';
-    $('rwResult').innerHTML = '<div class="spinner">Comparing your two drafts…</div>';
-    var fbCore = { wordChoice: lastFeedback.wordChoice, upgrades: lastFeedback.upgrades, grammar: lastFeedback.grammar, structure: lastFeedback.structure };
-    var prompt = 'You are a supportive English writing coach. The data contains the learner\'s FIRST DRAFT, the FEEDBACK you gave on it, and their REWRITE. Judge how well the rewrite applies the feedback (word choice, upgrades, grammar, and structure) and whether it introduced new problems. Respond with ONLY valid JSON (no markdown fences) in exactly this shape: {"improvement":"small | clear | big","verdict":"2-3 sentences: what improved most and the single most important thing still to work on","applied":[{"point":"a feedback point the learner applied well","how":"the phrase from the rewrite showing it, quoted exactly"}],"missed":[{"point":"a feedback point not applied or applied badly","tip":"one short sentence on how to fix it"}],"newIssues":[{"original":"a new error or awkward phrase in the rewrite, quoted exactly","fix":"corrected version","why":"one short sentence"}]}. Max 6 applied, max 4 missed, max 4 newIssues. Use empty arrays when nothing fits. Be specific and encouraging.';
-    callClaude(prompt, ['FIRST DRAFT:\n' + draft, 'FEEDBACK:\n' + JSON.stringify(fbCore), 'REWRITE:\n' + rw], 1500).then(function(s){
-      var c = extractJSON(String(s));
-      if (!c) throw new Error('The coach replied in an unexpected format. Try again.');
-      lastFeedback.rewrite = rw; lastFeedback.compare = c;
-      $('rwResult').innerHTML = renderCompare(c);
-      saveEntry(true);
-    }).catch(function(e){
-      $('rwResult').innerHTML = '<div class="empty">Comparison failed. ' + esc(e && e.message || e) + '</div>';
-    }).finally(function(){ btn.disabled = false; btn.textContent = 'Compare with first draft'; });
-  };
-
-  function renderModel(m){
-    var h = '<div class="side"><div><div class="label">Yours</div>' + esc(m.original || '') + '</div><div class="model"><div class="label">Model</div>' + esc(m.rewrite || '') + '</div></div>';
-    if (m.notes && m.notes.length) {
-      h += '<div class="fb-section"><div class="fb-title">What the model does differently</div>';
-      m.notes.forEach(function(n){
-        h += '<div class="fb-item up"><b>' + esc(n.technique || '') + '</b><br>' +
-          (n.yours ? '<span class="soso">' + esc(n.yours) + '</span> → ' : '') + '<span class="better">' + esc(n.model || '') + '</span> ' +
-          (n.model && countWords(n.model) <= 6 ? addBtn(n.model, 'neutral', n.why) : '') +
-          '<span class="why">' + esc(n.why || '') + '</span></div>';
-      });
-      h += '</div>';
-    }
-    return h;
-  }
-  $('mdBtn').onclick = function(){
-    var paras = splitParas($('entry').value);
-    var para = paras[+$('mdPara').value || 0];
-    if (!para || !lastFeedback) return;
-    var btn = $('mdBtn'); btn.disabled = true; btn.textContent = 'Writing…';
-    $('mdResult').innerHTML = '<div class="spinner">Writing a model version…</div>';
-    var c = currentTopic();
-    var prompt = 'You are an expert English writing coach. The data contains one paragraph written by an intermediate learner (topic: "' + c.topic + '", format: ' + c.fmt + '). Rewrite it the way a skilled professional writer would (IELTS band 8-9 quality), keeping the learner\'s ideas, facts, and roughly the same length (at most 30% longer). Match the register of the format. Do not add new arguments. Then explain the most instructive differences, focusing on word choice, phrases, and sentence structure (how sentences are joined, ordered, and where the main point goes). Respond with ONLY valid JSON (no markdown fences) in exactly this shape: {"rewrite":"the model paragraph","notes":[{"technique":"short name, e.g. Front-loading the main point, Subordinate clause, Precise verb, Collocation","yours":"the learner\'s phrase, quoted exactly (empty string if the technique is about order)","model":"the matching phrase in the model","why":"one short sentence on why it works"}]}. Give 4-6 notes.';
-    callClaude(prompt, [para], 1500).then(function(s){
-      var m = extractJSON(String(s));
-      if (!m || !m.rewrite) throw new Error('The coach replied in an unexpected format. Try again.');
-      m.original = para;
-      lastFeedback.model = m;
-      $('mdResult').innerHTML = renderModel(m);
-      bindAddButtons($('mdResult'));
-      saveEntry(true);
-    }).catch(function(e){
-      $('mdResult').innerHTML = '<div class="empty">Model rewrite failed. ' + esc(e && e.message || e) + '</div>';
-    }).finally(function(){ btn.disabled = false; btn.textContent = 'Show model'; });
-  };
-
-  // ---------- Follow-up chat ----------
-  var chatTurns = [];
-  function resetChat(show){
-    chatTurns = [];
-    $('chatLog').innerHTML = '';
-    $('chatInput').value = '';
-    $('chatBox').style.display = (show && hasApiKey()) ? '' : 'none';
-  }
-  function chatBubble(cls, text){
-    var d = document.createElement('div');
-    d.className = cls;
-    d.textContent = text;
-    $('chatLog').appendChild(d);
-    return d;
-  }
-  function sendChat(){
-    var q = $('chatInput').value.trim();
-    if (!q) return;
-    if (!hasApiKey()) return;
-    $('chatInput').value = '';
-    chatBubble('chat-q', q);
-    var pending = chatBubble('chat-a', 'Thinking…');
-    var btn = $('chatSend'); btn.disabled = true;
-    var c = currentTopic();
-    var context = {
-      topic: c.topic,
-      format: c.fmt,
-      essay: $('entry').value.trim(),
-      feedback: lastFeedback,
-      previousQuestions: chatTurns
-    };
-    var prompt = 'You are the same supportive English writing coach who just gave the feedback in the data. The data contains: the writing topic, the learner\'s essay, your feedback, any previous follow-up Q&A from this session, and finally the learner\'s new question. Answer the question directly and specifically, referring to their essay and your feedback where relevant. The learner is an intermediate English student — keep it clear and practical, with a short example if helpful. Plain text only: no markdown, no JSON, no headers. Maximum 6 sentences.';
-    callClaude(prompt, [JSON.stringify(context), 'Learner\'s question: ' + q], 700, { cache: false }).then(function(s){
-      if (typeof s !== 'string') s = String(s);
-      pending.textContent = s.trim();
-      chatTurns.push({ question: q, answer: s.trim() });
-    }).catch(function(e){
-      pending.textContent = 'That didn\'t work. ' + ((e && e.message) || e);
-    }).finally(function(){
-      btn.disabled = false;
-      $('chatInput').focus();
-    });
-  }
-  $('chatSend').onclick = sendChat;
-  $('chatInput').addEventListener('keydown', function(e){
-    if (e.key === 'Enter') { e.preventDefault(); sendChat(); }
-  });
-
-  // ---------- Grammar notebook ----------
-  var GCATS = [
-    {id:'tense', label:'Tense'},
-    {id:'sva', label:'Subject–verb agreement'},
-    {id:'plural', label:'Plural / singular'},
-    {id:'articles', label:'Articles'},
-    {id:'prep', label:'Prepositions'},
-    {id:'gerund', label:'Gerund / infinitive'},
-    {id:'wordform', label:'Word form'},
-    {id:'wordorder', label:'Word order'},
-    {id:'cond', label:'Conditionals'},
-    {id:'passive', label:'Passive voice'},
-    {id:'punct', label:'Punctuation'},
-    {id:'other', label:'Other / naturalness'}
-  ];
-  function catLabel(id){
-    var c = GCATS.find(function(x){ return x.id === id; });
-    return c ? c.label : 'Other / naturalness';
-  }
-  function catFromString(s){
-    s = String(s||'').toLowerCase();
-    if (GCATS.some(function(x){ return x.id === s; })) return s;
-    if (s.indexOf('tense') > -1 || s.indexOf('perfect') > -1) return 'tense';
-    if (s.indexOf('agreement') > -1 || s.indexOf('subject') > -1) return 'sva';
-    if (s.indexOf('plural') > -1 || s.indexOf('singular') > -1 || s.indexOf('count') > -1) return 'plural';
-    if (s.indexOf('article') > -1) return 'articles';
-    if (s.indexOf('preposition') > -1) return 'prep';
-    if (s.indexOf('gerund') > -1 || s.indexOf('infinitive') > -1) return 'gerund';
-    if (s.indexOf('word form') > -1 || s.indexOf('form') > -1) return 'wordform';
-    if (s.indexOf('order') > -1) return 'wordorder';
-    if (s.indexOf('condition') > -1) return 'cond';
-    if (s.indexOf('passive') > -1) return 'passive';
-    if (s.indexOf('punct') > -1 || s.indexOf('comma') > -1) return 'punct';
-    return 'other';
-  }
-  function normGram(s){ return String(s||'').toLowerCase().replace(/\s+/g,' ').trim(); }
-  function addGrammar(orig, fix, why, cat){
-    if (!orig) return;
-    var existing = grammar.find(function(g){ return normGram(g.original) === normGram(orig) || (fix && normGram(g.fix) === normGram(fix) && normGram(g.original) === normGram(orig)); });
-    if (existing) {
-      existing.count = (existing.count || 1) + 1;
-      existing.last = dstr(new Date());
-      if (fix && !existing.fix) existing.fix = fix;
-      if (why && !existing.why) existing.why = why;
-      if (cat && (!existing.cat || existing.cat === 'other')) existing.cat = catFromString(cat);
-      existing.fixed = false; // it came back — un-retire it
-    } else {
-      grammar.unshift({ original: orig, fix: fix || '', why: why || '', cat: catFromString(cat), count: 1, added: dstr(new Date()), last: dstr(new Date()), fixed: false });
-    }
-    save('dw_grammar', grammar);
-    renderGrammarList();
-  }
-  GCATS.forEach(function(c){
-    var opt = document.createElement('option');
-    opt.value = c.id; opt.textContent = c.label;
-    $('gCat').appendChild(opt);
-  });
-  $('gAdd').onclick = function(){
-    var orig = $('gWrong').value.trim();
-    if (!orig) return;
-    addGrammar(orig, $('gFix').value.trim(), $('gWhy').value.trim(), $('gCat').value);
-    $('gWrong').value = ''; $('gFix').value = ''; $('gWhy').value = '';
-  };
-
-  // ---------- Automatic mistake history ----------
-  function textHash(s){
-    var h = 5381;
-    for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
-    return String(h);
-  }
-  function recordGramStats(fbGrammar, text){
-    // don't double-count if the same text is reviewed again without edits
-    var hash = textHash(text);
-    if (lsGet('dw_gramhash') === hash) return;
-    lsSet('dw_gramhash', hash);
-    var today = dstr(new Date());
-    if (!gstats[today]) gstats[today] = {};
-    fbGrammar.forEach(function(g){
-      var cat = catFromString(g.category);
-      gstats[today][cat] = (gstats[today][cat] || 0) + 1;
-    });
-    save('dw_gramstats', gstats);
-    renderGramStats();
-  }
-  function renderGramStats(){
-    var box = $('gStats');
-    var total = {}, week = {};
-    var weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 6);
-    var weekStart = dstr(weekAgo);
-    var any = false;
-    Object.keys(gstats).forEach(function(date){
-      Object.keys(gstats[date]).forEach(function(cat){
-        var n = gstats[date][cat];
-        if (!n) return;
-        any = true;
-        total[cat] = (total[cat] || 0) + n;
-        if (date >= weekStart) week[cat] = (week[cat] || 0) + n;
-      });
-    });
-    if (!any) { box.innerHTML = '<div class="empty">No data yet — counts appear after your next feedback.</div>'; return; }
-    var max = 0;
-    Object.keys(total).forEach(function(c){ if (total[c] > max) max = total[c]; });
-    var rows = GCATS.filter(function(c){ return total[c.id]; })
-      .sort(function(a,b){ return total[b.id] - total[a.id]; })
-      .map(function(c){
-        var t = total[c.id], w = week[c.id] || 0;
-        return '<div class="stat-row"><div class="stat-label">' + c.label + '</div>' +
-          '<div class="stat-bar-wrap"><div class="stat-bar" style="width:' + Math.round(t / max * 100) + '%"></div></div>' +
-          '<div class="stat-num">' + t + ' total · ' + w + ' this week</div></div>';
-      });
-    box.innerHTML = rows.join('');
-  }
-
-  // one-time categorization for entries saved before categories existed
-  function renderGramMigrate(){
-    var box = $('gMigrateBox');
-    var missing = grammar.filter(function(g){ return !g.cat; });
-    if (!missing.length || !hasApiKey()) { box.innerHTML = ''; return; }
-    box.innerHTML = '<button class="btn-sm btn-add" id="gMigrateBtn" style="margin-bottom:8px">🏷 Categorize ' + missing.length + ' existing ' + (missing.length === 1 ? 'entry' : 'entries') + '</button>';
-    $('gMigrateBtn').onclick = function(){
-      var btn = $('gMigrateBtn');
-      btn.disabled = true; btn.textContent = 'Categorizing…';
-      var items = missing.map(function(g){ return { original: g.original, fix: g.fix || '' }; });
-      var prompt = 'You are an English grammar assistant. The data contains a JSON array of grammar mistakes (original text and correction). Classify EACH into exactly one category from this list: tense, sva (subject-verb agreement), plural (plural/singular), articles, prep (prepositions), gerund (gerund/infinitive), wordform, wordorder, cond (conditionals), passive, punct (punctuation), other. Respond with ONLY valid JSON, no markdown fences, in exactly this shape: {"categories":{"<original exactly as given>":"<category id>", ...}}. Include every item.';
-      callClaude(prompt, [JSON.stringify(items)]).then(function(s){
-        if (typeof s !== 'string') s = String(s);
-        var parsed = extractJSON(s);
-        var map = parsed && parsed.categories;
-        if (!map) throw new Error('unexpected response');
-        grammar.forEach(function(g){
-          if (g.cat) return;
-          var key = Object.keys(map).find(function(k){ return normGram(k) === normGram(g.original); });
-          g.cat = catFromString(key ? map[key] : 'other');
-        });
-        save('dw_grammar', grammar);
-        renderGrammarList();
-      }).catch(function(e){
-        btn.disabled = false; btn.textContent = 'Failed — try again';
-      });
-    };
-  }
-  function renderGrammarList(){
-    $('gCount').textContent = grammar.length;
-    renderGramMigrate();
-    if (!grammar.length) { $('gList').innerHTML = '<div class="empty">No mistakes logged yet — add one above, or click "+ Notebook" on a grammar point in your feedback.</div>'; return; }
-    var sorted = grammar.slice().sort(function(a,b){
-      if (!!a.fixed !== !!b.fixed) return a.fixed ? 1 : -1;         // active mistakes first
-      if ((b.count||1) !== (a.count||1)) return (b.count||1) - (a.count||1); // most frequent first
-      return String(b.last||b.added||'').localeCompare(String(a.last||a.added||''));
-    });
-    function grow(g){
-      var idx = grammar.indexOf(g);
-      return '<div class="vrow grow' + (g.fixed ? ' fixed' : '') + '"><div class="gmain">' +
-        '<span class="orig">' + esc(g.original) + '</span>' +
-        (g.fix ? ' → <span class="better">' + esc(g.fix) + '</span>' : '') +
-        ((g.count||1) > 1 ? '<span class="gtag">×' + (g.count||1) + '</span>' : '') +
-        (g.fixed ? '<span class="vtag">fixed</span>' : '') +
-        (g.why ? '<div class="vex">' + esc(g.why) + '</div>' : '') +
-        '</div><div class="gbtns">' +
-        '<button class="btn-sm ' + (g.fixed ? 'btn-ghost' : 'btn-add') + '" data-act="toggle" data-i="' + idx + '">' + (g.fixed ? 'Reopen' : 'Mark fixed') + '</button>' +
-        '<button class="btn-sm btn-danger" data-act="del" data-i="' + idx + '">✕</button>' +
-        '</div></div>';
-    }
-    var groups = {};
-    sorted.forEach(function(g){
-      var c = g.cat || 'uncategorized';
-      (groups[c] = groups[c] || []).push(g);
-    });
-    var h = '';
-    GCATS.forEach(function(cat){
-      if (!groups[cat.id]) return;
-      h += '<div class="label" style="margin-top:14px">' + cat.label + ' (' + groups[cat.id].length + ')</div>' + groups[cat.id].map(grow).join('');
-    });
-    if (groups['uncategorized']) {
-      h += '<div class="label" style="margin-top:14px">Uncategorized (' + groups['uncategorized'].length + ')</div>' + groups['uncategorized'].map(grow).join('');
-    }
-    $('gList').innerHTML = h;
-    Array.prototype.forEach.call($('gList').querySelectorAll('button'), function(b){
-      b.onclick = function(){
-        var g = grammar[+b.dataset.i];
-        if (!g) return;
-        if (b.dataset.act === 'toggle') g.fixed = !g.fixed;
-        else grammar.splice(+b.dataset.i, 1);
-        save('dw_grammar', grammar);
-        renderGrammarList();
-      };
-    });
-  }
-
-  // ---------- Vocab notebook ----------
-  function vocabType(v){ return v.type || (String(v.word||'').trim().indexOf(' ') > -1 ? 'phrase' : 'word'); }
-  function addVocab(word, reg, ex, mean){
-    if (!word) return;
-    if (vocab.some(function(v){ return v.word.toLowerCase() === word.toLowerCase(); })) return;
-    var type = word.trim().indexOf(' ') > -1 ? 'phrase' : 'word';
-    vocab.unshift({ word: word, register: reg || 'neutral', example: ex || '',
-      meaning: type === 'word' ? (mean || '') : '', type: type, added: dstr(new Date()) });
-    save('dw_vocab', vocab);
-    renderVocab();
-  }
-  $('nAdd').onclick = function(){
-    addVocab($('nWord').value.trim(), $('nReg').value, $('nEx').value.trim(), $('nMean').value.trim());
-    $('nWord').value = ''; $('nEx').value = ''; $('nMean').value = '';
-  };
-  $('vSearch').addEventListener('input', renderVocab);
-
-  // ---------- One-time meaning migration for older entries ----------
-  function renderMigrate(){
-    var box = $('migrateBox');
-    var missing = vocab.filter(function(v){ return !v.meaning && vocabType(v) === 'word'; });
-    if (!missing.length || !hasApiKey()) { box.innerHTML = ''; return; }
-    box.innerHTML = '<button class="btn-sm btn-add" id="migrateBtn">✨ Add meanings to ' + missing.length + ' existing ' + (missing.length === 1 ? 'entry' : 'entries') + '</button>';
-    $('migrateBtn').onclick = function(){
-      var btn = $('migrateBtn');
-      btn.disabled = true; btn.textContent = 'Generating meanings…';
-      var items = missing.map(function(v){ return { word: v.word, example: v.example || '' }; });
-      var prompt = 'You are an English vocabulary assistant. The data contains a JSON array of single words (with optional example sentences for context). For EACH item, write a brief plain-English meaning (max 10 words) suitable for an intermediate learner, matching the sense used in the example if one is given. Respond with ONLY valid JSON, no markdown fences, in exactly this shape: {"meanings":{"<word exactly as given>":"brief meaning", ...}}. Include every item.';
-      callClaude(prompt, [JSON.stringify(items)]).then(function(s){
-        if (typeof s !== 'string') s = String(s);
-        var parsed = extractJSON(s);
-        var map = parsed && parsed.meanings;
-        if (!map) throw new Error('unexpected response');
-        var updated = 0;
-        vocab.forEach(function(v){
-          if (v.meaning) return;
-          var key = Object.keys(map).find(function(k){ return k.toLowerCase() === v.word.toLowerCase(); });
-          if (key && map[key]) { v.meaning = String(map[key]); updated++; }
-          if (!v.type) v.type = v.word.trim().indexOf(' ') > -1 ? 'phrase' : 'word';
-        });
-        save('dw_vocab', vocab);
-        renderVocab();
-        if (!updated) { btn.disabled = false; btn.textContent = 'No meanings returned — try again'; }
-      }).catch(function(e){
-        btn.disabled = false; btn.textContent = 'Failed — try again';
-      });
-    };
-  }
-  function renderVocab(){
-    var q = $('vSearch').value.toLowerCase();
-    var list = vocab.filter(function(v){ return !q || v.word.toLowerCase().includes(q) || (v.example||'').toLowerCase().includes(q) || (v.meaning||'').toLowerCase().includes(q); });
-    $('vCount').textContent = vocab.length;
-    renderMigrate();
-    if (!list.length) { $('vList').innerHTML = '<div class="empty">' + (vocab.length ? 'No matches.' : 'No words yet — get feedback on an entry and add suggestions here.') + '</div>'; return; }
-    function vrow(v){
-      return '<div class="vrow"><div><span class="vword">' + esc(v.word) + '</span><span class="vtag">' + esc(v.register) + '</span>' +
-        (v.meaning ? '<div class="vmean">' + esc(v.meaning) + '</div>' : '') +
-        (v.example ? '<div class="vex">' + esc(v.example) + '</div>' : '') +
-        '</div><button class="btn-sm btn-danger" data-w="' + esc(v.word) + '">✕</button></div>';
-    }
-    var words = list.filter(function(v){ return vocabType(v) === 'word'; });
-    var phrases = list.filter(function(v){ return vocabType(v) === 'phrase'; });
-    var h = '';
-    if (words.length) h += '<div class="label" style="margin-top:8px">Words (' + words.length + ')</div>' + words.map(vrow).join('');
-    if (phrases.length) h += '<div class="label" style="margin-top:14px">Phrases (' + phrases.length + ')</div>' + phrases.map(vrow).join('');
-    $('vList').innerHTML = h;
-    Array.prototype.forEach.call($('vList').querySelectorAll('.btn-danger'), function(b){
-      b.onclick = function(){
-        vocab = vocab.filter(function(v){ return v.word !== b.dataset.w; });
-        save('dw_vocab', vocab); renderVocab();
-      };
-    });
-  }
-
-  // ---------- History ----------
-  function renderHistory(){
-    if (!entries.length) { $('hList').innerHTML = '<div class="empty">No entries yet. Today is a great day to start.</div>'; return; }
-    var sorted = entries.slice().sort(function(a,b){
-      if (a.date !== b.date) return b.date.localeCompare(a.date);
-      return String(b.time||'').localeCompare(String(a.time||''));
-    });
-    $('hList').innerHTML = sorted.map(function(e){
-      var fbNote = (e.feedback && e.feedback.overall) ? '<div class="fb-section"><div class="fb-title">Feedback</div><div class="overall">' + esc(e.feedback.overall) + '</div></div>' : '';
-      if (e.feedback && e.feedback.rewrite) fbNote += '<div class="fb-section"><div class="fb-title">Rewrite</div>' + esc(e.feedback.rewrite) + '</div>';
-      return '<div class="hrow"><div class="hdate">' + esc(e.date) + (e.time ? ' · ' + esc(e.time) : '') + ' <span class="vtag">' + esc(e.fmt||'') + '</span></div>' +
-        '<div class="htopic">' + esc(e.topic) + ' · ' + countWords(e.text) + ' words</div>' +
-        '<div class="hbody">' + esc(e.text) + fbNote + '</div></div>';
-    }).join('');
-    Array.prototype.forEach.call($('hList').querySelectorAll('.hrow'), function(r){
-      r.onclick = function(){ r.classList.toggle('open'); };
-    });
-  }
-
-  // ---------- Tabs ----------
-  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(t){
-    t.onclick = function(){
-      Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(x){ x.classList.remove('active'); });
-      t.classList.add('active');
-      ['write','notebook','history','settings'].forEach(function(n){ $('tab-'+n).style.display = (n === t.dataset.tab) ? '' : 'none'; });
-    };
-  });
-
-  // ---------- Init ----------
-  function renderAll(){
-    renderTopic(); renderTargets(); renderStreak(); renderVocab(); renderGrammarList(); renderGramStats(); renderHistory();
-    refreshSettingsUI();
-  }
-  function restoreToday(){
-    var todays = entries.filter(function(e){ return e.date === dstr(new Date()); })
-      .sort(function(a,b){ return String(a.time||'').localeCompare(String(b.time||'')); });
-    if (todays.length && !$('entry').value.trim()) {
-      var latest = todays[todays.length - 1];
-      $('entry').value = latest.text;
-      currentEntryId = latest.id;
-      $('entry').dispatchEvent(new Event('input'));
-      if (latest.feedback && latest.feedback.overall) {
-        lastFeedback = latest.feedback;
-        renderFeedback(latest.feedback.strengths ? latest.feedback : null, latest.feedback.overall);
-      }
-    }
-  }
-  function loadLocal(){
-    STORE.mode = 'local';
-    entries = load('dw_entries', []); vocab = load('dw_vocab', []); grammar = load('dw_grammar', []); gstats = load('dw_gramstats', {});
-  }
-  function boot(){
-    var api = window.claude && typeof window.claude.use === 'function' ? window.claude : null;
-    var use = function(n){ return api ? Promise.resolve(api.use(n)).catch(function(){ return null; }) : Promise.resolve(null); };
-    use('sample').then(function(fn){
-      if (fn) sampleFn = fn; else useApiKeyMode(); // outside Claude, fall back to the learner's own API key
-      coachChecked = true; refreshSettingsUI(); renderVocab(); renderGrammarList();
-    });
-    use('downloads').then(function(d){ downloadsApi = d; });
-    return Promise.all([use('db'), use('user')]).then(function(r){
-      var db = r[0], user = r[1];
-      if (!db || !user) return null;
-      return Promise.resolve(user.id()).then(function(uid){
-        if (!uid) return null;
-        var nbRef = db.doc('data/users/' + uid + '/notebook');
-        var col = nbRef.collection('entries');
-        return Promise.all([nbRef.get(), col.get()]).then(function(res){
-          STORE.mode = 'db'; STORE.nbRef = nbRef; STORE.entriesCol = col;
-          var nb = res[0].exists ? (res[0].data() || {}) : {};
-          vocab = JSON.parse(JSON.stringify(nb.vocab || []));
-          grammar = JSON.parse(JSON.stringify(nb.grammar || []));
-          gstats = JSON.parse(JSON.stringify(nb.gramstats || {}));
-          entries = res[1].docs.map(function(d){ return JSON.parse(JSON.stringify(d.data() || {})); });
-          return true;
-        });
-      });
-    }).catch(function(){ return null; }).then(function(ok){
-      if (!ok) loadLocal();
-      normalize();
-      syncLabel();
-      restoreToday();
-      renderAll();
-    });
-  }
-
-  var now = new Date();
-  $('today').textContent = now.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
-  renderAll();
-  $('hList').innerHTML = '<div class="empty">Loading your entries…</div>';
-  syncLabel();
-  boot();
-})();
-</script>
-
-</body></html>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
