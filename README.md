@@ -10,6 +10,40 @@ A single-page app for daily English writing practice: a topic and format each da
 - **History** – all past entries
 - **Settings** – coach depth (Quick / Standard / Thorough), API key, export and import
 
+## Screenshots
+
+### Write
+
+Today's topic, target words that tick off as you use them, and a live word count.
+
+<img src="docs/screenshots/write.png" alt="Write tab with today's topic, target words and an essay in progress" width="720">
+
+### Coach feedback
+
+Word choice, "level up" suggestions, grammar fixes, structure notes and words worth learning. Any suggestion can go into your notebook with one click. Below the feedback you can rewrite the essay and compare it with your first draft, see a model version of a paragraph, or ask the coach a follow-up question.
+
+<img src="docs/screenshots/feedback.png" alt="Feedback card with word choice, grammar, structure and vocabulary sections" width="720">
+
+### Notebook
+
+Mistake counts by category, your list of frequent grammar mistakes, and your saved words and phrases.
+
+<img src="docs/screenshots/notebook.png" alt="Notebook tab with mistake history chart, grammar mistakes and vocab list" width="720">
+
+### History
+
+<img src="docs/screenshots/history.png" alt="History tab listing past entries, with one expanded to show its feedback" width="720">
+
+### Settings
+
+<img src="docs/screenshots/settings.png" alt="Settings tab with API key, coach depth and data export and import" width="720">
+
+### Dark mode
+
+The app follows your system's light or dark setting.
+
+<img src="docs/screenshots/write-dark.png" alt="Write tab in dark mode" width="720">
+
 ## Running it
 
 There's no build step or dependencies, but the scripts are ES modules, so browsers won't load them from a `file://` URL. Serve the folder locally instead:
